@@ -70,7 +70,7 @@ fun SessionCompleteScreen(
         accuracy >= 0.9 -> "Fantastisch!"
         accuracy >= 0.7 -> "Super gemacht!"
         accuracy >= 0.5 -> "Gut gemacht!"
-        else -> "Toll, dass du geuebt hast!"
+        else -> "Toll, dass du geübt hast!"
     }
 
     val formattedTime = run {
@@ -166,7 +166,7 @@ fun SessionCompleteScreen(
                     Icon(Icons.Filled.CheckCircle, null, tint = AppGrassGreen, modifier = Modifier.size(24.dp))
                     Text("$correctCount/${results.size}", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onBackground)
                     Text(
-                        if (skippedCount > 0) "$skippedCount uebersprungen" else "Richtig",
+                        if (skippedCount > 0) "$skippedCount übersprungen" else "Richtig",
                         style = MaterialTheme.typography.bodySmall,
                         color = if (skippedCount > 0) AppSunYellow else LightTextSecondary
                     )
@@ -211,7 +211,7 @@ fun SessionCompleteScreen(
 
         if (accuracy < 0.7) {
             Text(
-                text = "Du hast $correctCount Aufgaben richtig geloest — das ist ein guter Anfang!",
+                text = "Du hast $correctCount Aufgaben richtig gelöst — das ist ein guter Anfang!",
                 style = MaterialTheme.typography.bodySmall,
                 color = LightTextSecondary,
                 textAlign = TextAlign.Center,
@@ -228,7 +228,7 @@ fun SessionCompleteScreen(
             ) {
                 Column {
                     Text("Tagesziel geschafft!", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onBackground)
-                    Text("Du hast dein Ziel fuer heute erreicht.", style = MaterialTheme.typography.bodySmall, color = LightTextSecondary)
+                    Text("Du hast dein Ziel für heute erreicht.", style = MaterialTheme.typography.bodySmall, color = LightTextSecondary)
                 }
             }
         }
@@ -268,7 +268,7 @@ fun SessionCompleteScreen(
                 backgroundColor = AppOrange.copy(alpha = 0.1f)
             ) {
                 Column {
-                    Text("${engagement.currentStreak} Tage am Stueck!", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onBackground)
+                    Text("${engagement.currentStreak} Tage am Stück!", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onBackground)
                     if (engagement.isNewStreak) {
                         Text("Weiter so!", style = MaterialTheme.typography.bodySmall, color = AppOrange)
                     }
@@ -307,7 +307,9 @@ fun SessionCompleteScreen(
         Spacer(modifier = Modifier.height(24.dp))
     }
 
-    // Confetti overlay
-    ConfettiAnimation(trigger = true)
+    // Confetti overlay — nur bei >= 60% Genauigkeit
+    if (accuracy >= 0.6) {
+        ConfettiAnimation(trigger = true)
+    }
     }
 }

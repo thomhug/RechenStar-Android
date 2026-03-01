@@ -3,7 +3,7 @@
 
     <!-- Profile -->
     <string name="profile_title">RechenStar</string>
-    <string name="profile_who_wants_to_play">Wer moechte rechnen?</string>
+    <string name="profile_who_wants_to_play">Wer möchte rechnen?</string>
     <string name="profile_new">Neues Profil</string>
     <string name="profile_create">Erstellen</string>
     <string name="profile_cancel">Abbrechen</string>
@@ -21,7 +21,7 @@
     <string name="exercise_revenge_success">Stark! Du hast es geschafft!</string>
     <string name="exercise_operation_hint">Achtung, %s nicht %s!</string>
     <string name="exercise_answer_is">Die Antwort ist %d</string>
-    <string name="exercise_skip">Ueberspringen</string>
+    <string name="exercise_skip">Überspringen</string>
     <string name="exercise_cancel">Abbrechen</string>
     <string name="exercise_encouragement">Kein Problem! Wir machen mit leichteren Aufgaben weiter.</string>
 
@@ -31,18 +31,18 @@
     <string name="session_level_up">Level Up!</string>
     <string name="session_level_now">Du bist jetzt %s!</string>
     <string name="session_correct">Richtig</string>
-    <string name="session_skipped">%d uebersprungen</string>
+    <string name="session_skipped">%d übersprungen</string>
     <string name="session_accuracy">Genauigkeit</string>
     <string name="session_time">Zeit</string>
     <string name="session_fantastic">Fantastisch!</string>
     <string name="session_super">Super gemacht!</string>
     <string name="session_good">Gut gemacht!</string>
-    <string name="session_keep_going">Toll, dass du geuebt hast!</string>
-    <string name="session_good_start">Du hast %d Aufgaben richtig geloest — das ist ein guter Anfang!</string>
+    <string name="session_keep_going">Toll, dass du geübt hast!</string>
+    <string name="session_good_start">Du hast %d Aufgaben richtig gelöst — das ist ein guter Anfang!</string>
     <string name="session_daily_goal_reached">Tagesziel geschafft!</string>
-    <string name="session_daily_goal_text">Du hast dein Ziel fuer heute erreicht.</string>
+    <string name="session_daily_goal_text">Du hast dein Ziel für heute erreicht.</string>
     <string name="session_by_category">Nach Kategorie</string>
-    <string name="session_streak">%d Tage am Stueck!</string>
+    <string name="session_streak">%d Tage am Stück!</string>
     <string name="session_keep_streak">Weiter so!</string>
     <string name="session_new_achievements">Neue Erfolge!</string>
     <string name="session_continue">Weiter</string>
@@ -55,8 +55,8 @@
     <string name="progress_exercises">Aufgaben</string>
     <string name="progress_streak">Tage-Serie</string>
     <string name="progress_stars">Sterne</string>
-    <string name="progress_strengths">Deine Staerken</string>
-    <string name="progress_max_level">Hoechstes Level erreicht!</string>
+    <string name="progress_strengths">Deine Stärken</string>
+    <string name="progress_max_level">Höchstes Level erreicht!</string>
 
     <!-- Achievements -->
     <string name="achievements_unlocked">%d von %d freigeschaltet</string>
@@ -71,20 +71,20 @@
     <string name="settings_difficulty_easy">Leicht</string>
     <string name="settings_difficulty_medium">Mittel</string>
     <string name="settings_difficulty_hard">Schwer</string>
-    <string name="settings_daily_goal">Taegliches Ziel</string>
-    <string name="settings_hide_skip">Ueberspringen ausblenden</string>
-    <string name="settings_hide_skip_desc">Versteckt den Ueberspringen-Button waehrend der Uebung</string>
-    <string name="settings_auto_answer">Automatisch Loesung zeigen</string>
+    <string name="settings_daily_goal">Tägliches Ziel</string>
+    <string name="settings_hide_skip">Überspringen ausblenden</string>
+    <string name="settings_hide_skip_desc">Versteckt den Überspringen-Button während der Übung</string>
+    <string name="settings_auto_answer">Automatisch Lösung zeigen</string>
     <string name="settings_auto_answer_off">Aus</string>
-    <string name="settings_gap_fill">Lueckenaufgaben</string>
+    <string name="settings_gap_fill">Lückenaufgaben</string>
     <string name="settings_gap_fill_desc">Auch Aufgaben wie ? + 4 = 7 stellen</string>
     <string name="settings_categories">Aufgabentypen</string>
     <string name="settings_sound">Ton &amp; Haptik</string>
-    <string name="settings_sounds">Toene</string>
+    <string name="settings_sounds">Töne</string>
     <string name="settings_vibration">Vibration</string>
     <string name="settings_display">Darstellung</string>
     <string name="settings_reduced_motion">Weniger Animationen</string>
-    <string name="settings_reduced_motion_desc">Reduziert Konfetti, Wackeln und Uebergaenge</string>
+    <string name="settings_reduced_motion_desc">Reduziert Konfetti, Wackeln und Übergänge</string>
     <string name="settings_help">So funktioniert\'s</string>
     <string name="settings_parent_area">Elternbereich</string>
     <string name="settings_version">Version 1.0.0</string>
@@ -93,21 +93,21 @@
     <string name="help_title">So funktioniert\'s</string>
     <string name="help_close">Schliessen</string>
     <string name="help_play_title">Spielen</string>
-    <string name="help_play_text">Tippe auf \"Spielen\", um eine Runde zu starten. Du bekommst Rechenaufgaben mit Plus, Minus und Mal. Tippe die Antwort auf dem Zahlenfeld ein und druecke den gruenen Haken.</string>
+    <string name="help_play_text">Tippe auf \"Spielen\", um eine Runde zu starten. Du bekommst Rechenaufgaben mit Plus, Minus und Mal. Tippe die Antwort auf dem Zahlenfeld ein und drücke den grünen Haken.</string>
     <string name="help_stars_title">Sterne sammeln</string>
-    <string name="help_stars_text">Fuer jede richtige Antwort bekommst du Sterne. Beim ersten Versuch gibt es 2 Sterne, beim zweiten noch 1 Stern. Nach zwei falschen Antworten wird die Loesung gezeigt.</string>
+    <string name="help_stars_text">Für jede richtige Antwort bekommst du Sterne. Beim ersten Versuch gibt es 2 Sterne, beim zweiten noch 1 Stern. Nach zwei falschen Antworten wird die Lösung gezeigt.</string>
     <string name="help_achievements_title">Erfolge</string>
-    <string name="help_achievements_text">Schalte Erfolge frei, indem du viele Aufgaben loest, Serien aufbaust oder besonders schnell rechnest.</string>
+    <string name="help_achievements_text">Schalte Erfolge frei, indem du viele Aufgaben löst, Serien aufbaust oder besonders schnell rechnest.</string>
     <string name="help_progress_title">Fortschritt</string>
-    <string name="help_progress_text">Im Fortschritt-Tab siehst du dein Level und deinen Skill. Dein Level steigt mit der Anzahl geloester Aufgaben, dein Skill zeigt deine Genauigkeit der letzten 7 Tage.</string>
+    <string name="help_progress_text">Im Fortschritt-Tab siehst du dein Level und deinen Skill. Dein Level steigt mit der Anzahl gelöster Aufgaben, dein Skill zeigt deine Genauigkeit der letzten 7 Tage.</string>
     <string name="help_settings_title">Einstellungen</string>
-    <string name="help_settings_text">Passe die Aufgabentypen, Toene und die Anzahl der Aufgaben pro Runde an. Eltern koennen auch den Ueberspringen-Knopf ausblenden.</string>
+    <string name="help_settings_text">Passe die Aufgabentypen, Töne und die Anzahl der Aufgaben pro Runde an. Eltern können auch den Überspringen-Knopf ausblenden.</string>
     <string name="help_parent_title">Elternbereich</string>
-    <string name="help_parent_text">Eltern koennen ueber die Einstellungen den Elternbereich oeffnen. Nach einer Rechenaufgabe fuer Erwachsene seht ihr detaillierte Statistiken.</string>
+    <string name="help_parent_text">Eltern können über die Einstellungen den Elternbereich öffnen. Nach einer Rechenaufgabe für Erwachsene seht ihr detaillierte Statistiken.</string>
 
     <!-- Parent Gate -->
     <string name="parent_gate_title">Elternbereich</string>
-    <string name="parent_gate_instruction">Bitte loese diese Aufgabe, um fortzufahren:</string>
+    <string name="parent_gate_instruction">Bitte löse diese Aufgabe, um fortzufahren:</string>
     <string name="parent_gate_wrong">Falsch, versuch es nochmal!</string>
 
     <!-- Parent Dashboard -->
@@ -117,12 +117,12 @@
     <string name="parent_dashboard_play_time">Spielzeit</string>
     <string name="parent_dashboard_sessions">Sessions</string>
     <string name="parent_dashboard_exercises">Aufgaben</string>
-    <string name="parent_dashboard_strengths">Staerken &amp; Schwaechen</string>
+    <string name="parent_dashboard_strengths">Stärken &amp; Schwächen</string>
     <string name="parent_dashboard_no_data">Noch keine Daten diese Woche</string>
     <string name="parent_dashboard_total">Gesamt</string>
-    <string name="parent_dashboard_total_exercises">Aufgaben geloest</string>
+    <string name="parent_dashboard_total_exercises">Aufgaben gelöst</string>
     <string name="parent_dashboard_total_stars">Sterne gesammelt</string>
-    <string name="parent_dashboard_longest_streak">Laengster Streak</string>
+    <string name="parent_dashboard_longest_streak">Längster Streak</string>
 
     <!-- Categories -->
     <string name="category_addition">Addition</string>
@@ -136,9 +136,9 @@
     <string name="nav_settings">Einstellungen</string>
 
     <!-- Levels -->
-    <string name="level_anfaenger">Anfaenger</string>
+    <string name="level_anfaenger">Anfänger</string>
     <string name="level_entdecker">Entdecker</string>
-    <string name="level_rechenkuenstler">Rechenkuenstler</string>
+    <string name="level_rechenkuenstler">Rechenkünstler</string>
     <string name="level_mathe_held">Mathe-Held</string>
     <string name="level_zahlenmeister">Zahlenmeister</string>
     <string name="level_rechenstar">RechenStar</string>

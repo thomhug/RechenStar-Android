@@ -10,7 +10,7 @@ enum class ColorBlindMode(val rawValue: String) {
         get() = when (this) {
             NONE -> "Keine"
             PROTANOPIA -> "Protanopie (Rot-Blind)"
-            DEUTERANOPIA -> "Deuteranopie (Gruen-Blind)"
+            DEUTERANOPIA -> "Deuteranopie (Grün-Blind)"
             TRITANOPIA -> "Tritanopie (Blau-Blind)"
         }
 

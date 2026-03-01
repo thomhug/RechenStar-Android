@@ -89,7 +89,7 @@ fun ParentDashboardScreen(
             // Strengths & Weaknesses
             AppCard(modifier = Modifier.fillMaxWidth()) {
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Text("Staerken & Schwaechen", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onSurface)
+                    Text("Stärken & Schwächen", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onSurface)
 
                     if (state.categoryStats.isEmpty()) {
                         Text("Noch keine Daten diese Woche", style = MaterialTheme.typography.bodyMedium, color = LightTextSecondary)
@@ -123,9 +123,9 @@ fun ParentDashboardScreen(
             AppCard(modifier = Modifier.fillMaxWidth()) {
                 Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                     Text("Gesamt", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onSurface)
-                    OverallStatRow("Aufgaben geloest", "${state.totalExercises}")
+                    OverallStatRow("Aufgaben gelöst", "${state.totalExercises}")
                     OverallStatRow("Sterne gesammelt", "${state.totalStars}")
-                    OverallStatRow("Laengster Streak", "${state.longestStreak} Tage")
+                    OverallStatRow("Längster Streak", "${state.longestStreak} Tage")
                 }
             }
         }

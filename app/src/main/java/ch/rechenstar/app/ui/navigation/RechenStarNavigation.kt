@@ -24,7 +24,6 @@ import ch.rechenstar.app.features.profile.ProfileSelectionScreen
 import ch.rechenstar.app.features.progress.ProgressScreen
 import ch.rechenstar.app.features.settings.HelpScreen
 import ch.rechenstar.app.features.settings.ParentDashboardScreen
-import ch.rechenstar.app.features.settings.ParentGateScreen
 import ch.rechenstar.app.features.settings.SettingsScreen
 
 sealed class Screen(val route: String) {
@@ -35,7 +34,6 @@ sealed class Screen(val route: String) {
     data object Exercise : Screen("exercise")
     data object SessionComplete : Screen("session_complete")
     data object Help : Screen("help")
-    data object ParentGate : Screen("parent_gate")
     data object ParentDashboard : Screen("parent_dashboard")
     data object ProfileSelection : Screen("profile_selection")
 }
@@ -123,7 +121,7 @@ fun RechenStarNavigation() {
                         navController.navigate(Screen.Help.route)
                     },
                     onShowParentArea = {
-                        navController.navigate(Screen.ParentGate.route)
+                        navController.navigate(Screen.ParentDashboard.route)
                     }
                 )
             }
@@ -165,17 +163,6 @@ fun RechenStarNavigation() {
 
             composable(Screen.Help.route) {
                 HelpScreen(onDismiss = { navController.popBackStack() })
-            }
-
-            composable(Screen.ParentGate.route) {
-                ParentGateScreen(
-                    onSuccess = {
-                        navController.navigate(Screen.ParentDashboard.route) {
-                            popUpTo(Screen.ParentGate.route) { inclusive = true }
-                        }
-                    },
-                    onCancel = { navController.popBackStack() }
-                )
             }
 
             composable(Screen.ParentDashboard.route) {

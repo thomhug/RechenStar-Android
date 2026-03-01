@@ -15,12 +15,12 @@ enum class Level(val order: Int, val requiredExercises: Int) {
 
     val title: String
         get() = when (this) {
-            ANFAENGER -> "Anfaenger"
+            ANFAENGER -> "Anfänger"
             RECHENKIND -> "Rechenkind"
             ZAHLENFUCHS -> "Zahlenfuchs"
             RECHENPROFI -> "Rechenprofi"
             MATHE_HELD -> "Mathe-Held"
-            ZAHLENKOENIG -> "Zahlenkoenig"
+            ZAHLENKOENIG -> "Zahlenkönig"
             RECHENSTAR -> "RechenStar"
             RECHENSTAR_2 -> "RechenStar 2"
             RECHENSTAR_3 -> "RechenStar 3"

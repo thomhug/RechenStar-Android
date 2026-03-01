@@ -95,6 +95,8 @@ dependencies {
     // UI Testing
     androidTestImplementation(composeBom)
     androidTestImplementation(libs.compose.ui.test.junit4)
+    androidTestImplementation(libs.test.ext.junit)
+    androidTestImplementation(libs.test.espresso.core)
 }
 
 tasks.withType<Test> {

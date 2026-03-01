@@ -1,5 +1,9 @@
 package ch.rechenstar.app.features.exercise
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import ch.rechenstar.app.domain.model.Difficulty
 import ch.rechenstar.app.domain.model.Exercise
 import ch.rechenstar.app.domain.model.ExerciseCategory
@@ -7,7 +11,6 @@ import ch.rechenstar.app.domain.model.ExerciseConstants
 import ch.rechenstar.app.domain.model.ExerciseResult
 import ch.rechenstar.app.domain.service.ExerciseGenerator
 import ch.rechenstar.app.domain.service.ExerciseMetrics
-import kotlin.math.abs
 import kotlin.math.min
 
 class ExerciseViewModel(
@@ -42,21 +45,21 @@ class ExerciseViewModel(
 
     enum class SessionState { NOT_STARTED, IN_PROGRESS, COMPLETED }
 
-    var currentExercise: Exercise? = null
+    var currentExercise: Exercise? by mutableStateOf(null)
         private set
-    var userAnswer: String = ""
-    var isNegative: Boolean = false
-    var exerciseIndex: Int = 0
+    var userAnswer: String by mutableStateOf("")
+    var isNegative: Boolean by mutableStateOf(false)
+    var exerciseIndex: Int by mutableIntStateOf(0)
         private set
-    var sessionResults: MutableList<ExerciseResult> = mutableListOf()
+    var sessionResults: List<ExerciseResult> by mutableStateOf(emptyList())
         private set
-    var feedbackState: FeedbackState = FeedbackState.None
+    var feedbackState: FeedbackState by mutableStateOf<FeedbackState>(FeedbackState.None)
         private set
-    var sessionState: SessionState = SessionState.NOT_STARTED
+    var sessionState: SessionState by mutableStateOf(SessionState.NOT_STARTED)
         private set
-    var currentDifficulty: Difficulty = difficulty
+    var currentDifficulty: Difficulty by mutableStateOf(difficulty)
         private set
-    var showEncouragement: Boolean = false
+    var showEncouragement: Boolean by mutableStateOf(false)
         private set
 
     private var exercises: MutableList<Exercise> = mutableListOf()
@@ -101,7 +104,7 @@ class ExerciseViewModel(
             metrics = metrics,
             allowGapFill = gapFillEnabled
         ).toMutableList()
-        sessionResults = mutableListOf()
+        sessionResults = emptyList()
         exerciseIndex = 0
         userAnswer = ""
         isNegative = false
@@ -155,7 +158,7 @@ class ExerciseViewModel(
                 attempts = currentAttempts,
                 timeSpent = timeSpent
             )
-            sessionResults.add(result)
+            sessionResults = sessionResults + result
 
             val isRevenge = exercise.isRetry || currentAttempts > 1 || isWeakExercise(exercise)
             feedbackState = if (isRevenge) FeedbackState.Revenge(result.stars) else FeedbackState.Correct(result.stars)
@@ -172,7 +175,7 @@ class ExerciseViewModel(
                 timeSpent = timeSpent,
                 wasRevealed = true
             )
-            sessionResults.add(result)
+            sessionResults = sessionResults + result
             feedbackState = FeedbackState.ShowAnswer(exercise.correctAnswer)
         } else {
             // Check for +/- confusion (standard format only)
@@ -274,7 +277,7 @@ class ExerciseViewModel(
             timeSpent = timeSpent,
             wasSkipped = true
         )
-        sessionResults.add(result)
+        sessionResults = sessionResults + result
         feedbackState = FeedbackState.ShowAnswer(exercise.correctAnswer)
     }
 
@@ -295,7 +298,7 @@ class ExerciseViewModel(
             wasRevealed = true,
             wasSkipped = true
         )
-        sessionResults.add(result)
+        sessionResults = sessionResults + result
         feedbackState = FeedbackState.ShowAnswer(exercise.correctAnswer)
     }
 

@@ -341,30 +341,39 @@ class ExerciseGeneratorTest {
     }
 
     @Test
-    fun `multiplication 10 very easy excludes ones`() {
-        repeat(100) {
+    fun `multiplication 10 very easy allows ones`() {
+        var sawOne = false
+        repeat(200) {
             val exercise = ExerciseGenerator.generate(difficulty = Difficulty.VERY_EASY, category = ExerciseCategory.MULTIPLICATION_10)
-            assertTrue(exercise.firstNumber >= 2, "VeryEasy multiplication should not have factor 1, got ${exercise.firstNumber}x${exercise.secondNumber}")
-            assertTrue(exercise.secondNumber >= 2, "VeryEasy multiplication should not have factor 1, got ${exercise.firstNumber}x${exercise.secondNumber}")
+            assertTrue(exercise.firstNumber >= 1, "VeryEasy multiplication factor should be >= 1")
+            assertTrue(exercise.secondNumber >= 1, "VeryEasy multiplication factor should be >= 1")
+            if (exercise.firstNumber == 1 || exercise.secondNumber == 1) sawOne = true
         }
+        assertTrue(sawOne, "VeryEasy multiplication should allow factor 1")
     }
 
     @Test
-    fun `multiplication 10 easy excludes ones`() {
-        repeat(100) {
+    fun `multiplication 10 easy allows ones`() {
+        var sawOne = false
+        repeat(200) {
             val exercise = ExerciseGenerator.generate(difficulty = Difficulty.EASY, category = ExerciseCategory.MULTIPLICATION_10)
-            assertTrue(exercise.firstNumber >= 2, "Easy multiplication should not have factor 1, got ${exercise.firstNumber}x${exercise.secondNumber}")
-            assertTrue(exercise.secondNumber >= 2, "Easy multiplication should not have factor 1, got ${exercise.firstNumber}x${exercise.secondNumber}")
+            assertTrue(exercise.firstNumber >= 1, "Easy multiplication factor should be >= 1")
+            assertTrue(exercise.secondNumber >= 1, "Easy multiplication factor should be >= 1")
+            if (exercise.firstNumber == 1 || exercise.secondNumber == 1) sawOne = true
         }
+        assertTrue(sawOne, "Easy multiplication should allow factor 1")
     }
 
     @Test
-    fun `multiplication 100 very easy excludes ones`() {
-        repeat(100) {
+    fun `multiplication 100 very easy allows ones`() {
+        var sawOne = false
+        repeat(200) {
             val exercise = ExerciseGenerator.generate(difficulty = Difficulty.VERY_EASY, category = ExerciseCategory.MULTIPLICATION_100)
-            assertTrue(exercise.firstNumber >= 2, "VeryEasy grosses 1x1 should not have factor 1, got ${exercise.firstNumber}x${exercise.secondNumber}")
-            assertTrue(exercise.secondNumber >= 2, "VeryEasy grosses 1x1 should not have factor 1, got ${exercise.firstNumber}x${exercise.secondNumber}")
+            assertTrue(exercise.firstNumber >= 1, "VeryEasy grosses 1x1 factor should be >= 1")
+            assertTrue(exercise.secondNumber >= 1, "VeryEasy grosses 1x1 factor should be >= 1")
+            if (exercise.firstNumber == 1 || exercise.secondNumber == 1) sawOne = true
         }
+        assertTrue(sawOne, "VeryEasy grosses 1x1 should allow factor 1")
     }
 
     @Test

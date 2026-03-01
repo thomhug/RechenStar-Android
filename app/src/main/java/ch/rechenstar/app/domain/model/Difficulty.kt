@@ -42,7 +42,7 @@ enum class Difficulty(val level: Int) {
         get() = when (this) {
             VERY_EASY -> "Entdecker"
             EASY -> "Kenner"
-            MEDIUM -> "Koenner"
+            MEDIUM -> "Könner"
             HARD -> "Meister"
         }
 
@@ -50,7 +50,7 @@ enum class Difficulty(val level: Int) {
         get() = when (this) {
             VERY_EASY -> "skill_entdecker"
             EASY -> "skill_kenner"
-            MEDIUM -> "skill_koenner"
+            MEDIUM -> "skill_könner"
             HARD -> "skill_meister"
         }
 

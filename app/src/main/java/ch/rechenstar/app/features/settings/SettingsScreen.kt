@@ -14,7 +14,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.automirrored.filled.HelpOutline
-import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.People
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -84,7 +84,7 @@ fun SettingsScreen(
             )
 
             SettingsDropdown(
-                label = "Taegliches Ziel",
+                label = "Tägliches Ziel",
                 options = listOf(
                     10 to "10 Aufgaben",
                     20 to "20 Aufgaben",
@@ -96,21 +96,21 @@ fun SettingsScreen(
             )
 
             SettingsToggle(
-                title = "Ueberspringen ausblenden",
-                subtitle = "Versteckt den Ueberspringen-Button waehrend der Uebung",
+                title = "Überspringen ausblenden",
+                subtitle = "Versteckt den Überspringen-Button während der Übung",
                 checked = state.hideSkipButton,
                 onCheckedChange = { viewModel.updateHideSkipButton(it) }
             )
 
             SettingsDropdown(
-                label = "Automatisch Loesung zeigen",
+                label = "Automatisch Lösung zeigen",
                 options = listOf(0 to "Aus", 5 to "Nach 5s", 10 to "Nach 10s", 20 to "Nach 20s"),
                 selected = state.autoShowAnswerSeconds,
                 onSelected = { viewModel.updateAutoShowAnswer(it) }
             )
 
             SettingsToggle(
-                title = "Lueckenaufgaben",
+                title = "Lückenaufgaben",
                 subtitle = "Auch Aufgaben wie ? + 4 = 7 stellen",
                 checked = state.gapFillEnabled,
                 onCheckedChange = { viewModel.updateGapFillEnabled(it) }
@@ -149,7 +149,7 @@ fun SettingsScreen(
             Spacer(modifier = Modifier.height(12.dp))
 
             SettingsToggle(
-                title = "Toene",
+                title = "Töne",
                 checked = state.soundEnabled,
                 onCheckedChange = { viewModel.updateSoundEnabled(it) }
             )
@@ -169,7 +169,7 @@ fun SettingsScreen(
 
             SettingsToggle(
                 title = "Weniger Animationen",
-                subtitle = "Reduziert Konfetti, Wackeln und Uebergaenge",
+                subtitle = "Reduziert Konfetti, Wackeln und Übergänge",
                 checked = state.reducedMotion,
                 onCheckedChange = { viewModel.updateReducedMotion(it) }
             )
@@ -207,7 +207,7 @@ fun SettingsScreen(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(Icons.Filled.Lock, null, tint = AppSkyBlue, modifier = Modifier.size(24.dp))
+                    Icon(Icons.Filled.People, null, tint = AppSkyBlue, modifier = Modifier.size(24.dp))
                     Text(
                         "Elternbereich",
                         style = MaterialTheme.typography.bodyLarge,

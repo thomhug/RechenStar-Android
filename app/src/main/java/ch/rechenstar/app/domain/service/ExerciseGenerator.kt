@@ -172,7 +172,7 @@ object ExerciseGenerator {
 
             ExerciseCategory.MULTIPLICATION_10 -> {
                 val range = difficulty.range
-                val minFactor = maxOf(range.first, ExerciseConstants.MINIMUM_MULTIPLICATION_FACTOR)
+                val minFactor = if (difficulty <= Difficulty.EASY) range.first else maxOf(range.first, ExerciseConstants.MINIMUM_MULTIPLICATION_FACTOR)
                 val first = Random.nextInt(minFactor, range.last + 1)
                 val second = Random.nextInt(minFactor, range.last + 1)
                 Exercise(type = OperationType.MULTIPLICATION, category = category, firstNumber = first, secondNumber = second, difficulty = difficulty, format = format)
@@ -180,7 +180,7 @@ object ExerciseGenerator {
 
             ExerciseCategory.MULTIPLICATION_100 -> {
                 val maxProduct = difficulty.maxProduct
-                val minFactor = maxOf(difficulty.range.first, ExerciseConstants.MINIMUM_MULTIPLICATION_FACTOR)
+                val minFactor = if (difficulty <= Difficulty.EASY) difficulty.range.first else maxOf(difficulty.range.first, ExerciseConstants.MINIMUM_MULTIPLICATION_FACTOR)
                 val excludedFactors: Set<Int> = if (difficulty == Difficulty.HARD) ExerciseConstants.EXCLUDED_HARD_MULTIPLICATION_FACTORS else emptySet()
                 var first: Int
                 var second: Int

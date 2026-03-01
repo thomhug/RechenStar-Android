@@ -66,37 +66,37 @@ fun HelpScreen(onDismiss: () -> Unit) {
                 icon = Icons.Filled.PlayCircle,
                 color = AppSkyBlue,
                 title = "Spielen",
-                text = "Tippe auf \"Spielen\", um eine Runde zu starten. Du bekommst Rechenaufgaben mit Plus, Minus und Mal. Tippe die Antwort auf dem Zahlenfeld ein und druecke den gruenen Haken."
+                text = "Tippe auf \"Spielen\", um eine Runde zu starten. Du bekommst Rechenaufgaben mit Plus, Minus und Mal. Tippe die Antwort auf dem Zahlenfeld ein und drücke den grünen Haken."
             )
             HelpSection(
                 icon = Icons.Filled.Star,
                 color = AppSunYellow,
                 title = "Sterne sammeln",
-                text = "Fuer jede richtige Antwort bekommst du Sterne. Beim ersten Versuch gibt es 2 Sterne, beim zweiten noch 1 Stern. Nach zwei falschen Antworten wird die Loesung gezeigt."
+                text = "Für jede richtige Antwort bekommst du Sterne. Beim ersten Versuch gibt es 2 Sterne, beim zweiten noch 1 Stern. Nach zwei falschen Antworten wird die Lösung gezeigt."
             )
             HelpSection(
                 icon = Icons.Filled.EmojiEvents,
                 color = AppOrange,
                 title = "Erfolge",
-                text = "Schalte Erfolge frei, indem du viele Aufgaben loest, Serien aufbaust oder besonders schnell rechnest."
+                text = "Schalte Erfolge frei, indem du viele Aufgaben löst, Serien aufbaust oder besonders schnell rechnest."
             )
             HelpSection(
                 icon = Icons.AutoMirrored.Filled.ShowChart,
                 color = AppGrassGreen,
                 title = "Fortschritt",
-                text = "Im Fortschritt-Tab siehst du dein Level und deinen Skill. Dein Level steigt mit der Anzahl geloester Aufgaben, dein Skill zeigt deine Genauigkeit der letzten 7 Tage."
+                text = "Im Fortschritt-Tab siehst du dein Level und deinen Skill. Dein Level steigt mit der Anzahl gelöster Aufgaben, dein Skill zeigt deine Genauigkeit der letzten 7 Tage."
             )
             HelpSection(
                 icon = Icons.Filled.Settings,
                 color = LightTextSecondary,
                 title = "Einstellungen",
-                text = "Passe die Aufgabentypen, Toene und die Anzahl der Aufgaben pro Runde an. Eltern koennen auch den Ueberspringen-Knopf ausblenden."
+                text = "Passe die Aufgabentypen, Töne und die Anzahl der Aufgaben pro Runde an. Eltern können auch den Überspringen-Knopf ausblenden."
             )
             HelpSection(
                 icon = Icons.AutoMirrored.Filled.HelpOutline,
                 color = AppPurple,
                 title = "Elternbereich",
-                text = "Eltern koennen ueber die Einstellungen den Elternbereich oeffnen. Nach einer Rechenaufgabe fuer Erwachsene seht ihr detaillierte Statistiken."
+                text = "Eltern können über die Einstellungen den Elternbereich öffnen. Nach einer Rechenaufgabe für Erwachsene seht ihr detaillierte Statistiken."
             )
         }
     }

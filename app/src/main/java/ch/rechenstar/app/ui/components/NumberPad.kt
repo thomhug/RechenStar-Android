@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
@@ -67,6 +68,7 @@ fun NumberPad(
                     icon = Icons.Filled.Remove,
                     description = "Negativ",
                     color = AppSkyBlue,
+                    tag = "negative-button",
                     onClick = onToggleNegative
                 )
             } else {
@@ -75,8 +77,9 @@ fun NumberPad(
             NumberPadButton(number = 0, onClick = onDigit)
             ActionPadButton(
                 icon = Icons.AutoMirrored.Filled.Backspace,
-                description = "Loeschen",
+                description = "Löschen",
                 color = AppCoral,
+                tag = "delete-button",
                 onClick = onDelete
             )
         }
@@ -87,6 +90,7 @@ fun NumberPad(
             color = if (canSubmit) AppGrassGreen else Color.Gray,
             size = 72.dp,
             enabled = canSubmit,
+            tag = "submit-button",
             onClick = onSubmit
         )
     }
@@ -123,6 +127,7 @@ fun NumberPadButton(
         modifier = Modifier
             .size(size)
             .scale(scale)
+            .testTag("number-pad-$number")
             .semantics { contentDescription = "$number" },
         shape = CircleShape,
         color = MaterialTheme.colorScheme.surface,
@@ -146,6 +151,7 @@ fun ActionPadButton(
     color: Color,
     size: Dp = 72.dp,
     enabled: Boolean = true,
+    tag: String? = null,
     onClick: () -> Unit
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -161,6 +167,7 @@ fun ActionPadButton(
         modifier = Modifier
             .size(size)
             .scale(scale)
+            .testTag(tag ?: description)
             .semantics { contentDescription = description },
         shape = CircleShape,
         color = color.copy(alpha = 0.1f),

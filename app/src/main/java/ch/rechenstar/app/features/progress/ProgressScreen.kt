@@ -98,7 +98,7 @@ fun ProgressScreen(
                         )
                     } ?: run {
                         Text(
-                            text = "Hoechstes Level erreicht!",
+                            text = "Höchstes Level erreicht!",
                             style = MaterialTheme.typography.bodySmall,
                             color = AppSunYellow
                         )
@@ -169,7 +169,7 @@ fun ProgressScreen(
             Spacer(modifier = Modifier.height(12.dp))
             AppCard(modifier = Modifier.fillMaxWidth()) {
                 Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    Text("Deine Staerken", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onSurface)
+                    Text("Deine Stärken", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onSurface)
                     state.categoryStats.forEach { stat ->
                         Row(
                             modifier = Modifier.fillMaxWidth(),
