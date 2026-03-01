@@ -77,6 +77,73 @@ fun ProgressScreen(
             .verticalScroll(rememberScrollState())
             .padding(20.dp)
     ) {
+        // Level badge
+        AppCard(modifier = Modifier.fillMaxWidth()) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(14.dp)
+            ) {
+                // Level info
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = state.currentLevel.title,
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    state.nextLevelExercises?.let { next ->
+                        AppProgressBar(
+                            progress = state.levelProgress.toFloat(),
+                            color = AppSunYellow
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = "Noch ${next - state.totalExercises} Aufgaben",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = LightTextSecondary
+                        )
+                    } ?: run {
+                        Text(
+                            text = "Höchstes Level erreicht!",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = AppSunYellow
+                        )
+                    }
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        // Daily goal
+        val dailyDone = state.dailyCompleted >= state.dailyGoal
+        AppCard(modifier = Modifier.fillMaxWidth()) {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        Icons.Filled.CheckCircle,
+                        null,
+                        tint = if (dailyDone) AppGrassGreen else AppSkyBlue,
+                        modifier = Modifier.size(28.dp)
+                    )
+                    Column(modifier = Modifier.padding(start = 12.dp)) {
+                        Text("Tagesziel", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onSurface)
+                        Text("${state.dailyCompleted} von ${state.dailyGoal} Aufgaben", style = MaterialTheme.typography.bodySmall, color = LightTextSecondary)
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
+                    if (dailyDone) {
+                        Text("Geschafft!", style = MaterialTheme.typography.bodySmall, color = AppGrassGreen)
+                    }
+                }
+                AppProgressBar(
+                    progress = (state.dailyCompleted.toFloat() / state.dailyGoal).coerceIn(0f, 1f),
+                    color = if (dailyDone) AppGrassGreen else AppSkyBlue,
+                    height = 10.dp
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
         // Stats row
         Row(
             modifier = Modifier.fillMaxWidth(),
