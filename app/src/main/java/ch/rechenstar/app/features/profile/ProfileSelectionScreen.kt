@@ -116,7 +116,7 @@ fun ProfileSelectionScreen(
 
         AppButton(
             title = "Neues Profil",
-            variant = AppButtonVariant.SECONDARY,
+            variant = AppButtonVariant.PRIMARY,
             icon = Icons.Filled.Add,
             onClick = { showCreateDialog = true }
         )

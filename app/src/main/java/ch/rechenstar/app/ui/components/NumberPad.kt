@@ -58,7 +58,7 @@ fun NumberPad(
         NumberRow(listOf(4, 5, 6), onDigit)
         // Row 3: 7 8 9
         NumberRow(listOf(7, 8, 9), onDigit)
-        // Row 4: [negative/empty] 0 delete
+        // Row 4: delete 0 submit (like iOS layout)
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -72,9 +72,26 @@ fun NumberPad(
                     onClick = onToggleNegative
                 )
             } else {
-                Box(modifier = Modifier.size(72.dp))
+                ActionPadButton(
+                    icon = Icons.AutoMirrored.Filled.Backspace,
+                    description = "Löschen",
+                    color = AppCoral,
+                    tag = "delete-button",
+                    onClick = onDelete
+                )
             }
             NumberPadButton(number = 0, onClick = onDigit)
+            ActionPadButton(
+                icon = Icons.Filled.CheckCircle,
+                description = "Fertig",
+                color = if (canSubmit) AppGrassGreen else Color.Gray,
+                enabled = canSubmit,
+                tag = "submit-button",
+                onClick = onSubmit
+            )
+        }
+        // Extra row for delete when negative toggle is shown
+        if (showNegativeToggle) {
             ActionPadButton(
                 icon = Icons.AutoMirrored.Filled.Backspace,
                 description = "Löschen",
@@ -83,16 +100,6 @@ fun NumberPad(
                 onClick = onDelete
             )
         }
-        // Submit button
-        ActionPadButton(
-            icon = Icons.Filled.CheckCircle,
-            description = "Fertig",
-            color = if (canSubmit) AppGrassGreen else Color.Gray,
-            size = 72.dp,
-            enabled = canSubmit,
-            tag = "submit-button",
-            onClick = onSubmit
-        )
     }
 }
 
