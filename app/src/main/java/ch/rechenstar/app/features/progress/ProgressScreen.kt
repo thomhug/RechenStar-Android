@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import ch.rechenstar.app.domain.model.Difficulty
 import ch.rechenstar.app.domain.model.ExerciseCategory
 import ch.rechenstar.app.domain.model.Level
 import ch.rechenstar.app.ui.components.AppCard
@@ -48,6 +49,7 @@ data class ProgressUiState(
     val currentLevel: Level = Level.ANFAENGER,
     val levelProgress: Double = 0.0,
     val nextLevelExercises: Int? = null,
+    val currentSkillLevel: Difficulty = Difficulty.VERY_EASY,
     val dailyGoal: Int = 20,
     val dailyCompleted: Int = 0,
     val categoryStats: List<CategoryStat> = emptyList(),
@@ -108,6 +110,36 @@ fun ProgressScreen(
                             color = AppSunYellow
                         )
                     }
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        // Skill badge (quality-based)
+        AppCard(modifier = Modifier.fillMaxWidth()) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(14.dp)
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = state.currentSkillLevel.skillTitle,
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Text(
+                        text = state.currentSkillLevel.label,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = skillColor(state.currentSkillLevel),
+                        modifier = Modifier
+                            .background(
+                                skillColor(state.currentSkillLevel).copy(alpha = 0.15f),
+                                RoundedCornerShape(12.dp)
+                            )
+                            .padding(horizontal = 8.dp, vertical = 2.dp)
+                    )
                 }
             }
         }
@@ -316,5 +348,14 @@ private fun strengthColor(accuracy: Double): androidx.compose.ui.graphics.Color 
         accuracy >= 0.8 -> AppGrassGreen
         accuracy >= 0.5 -> AppSunYellow
         else -> AppCoral
+    }
+}
+
+private fun skillColor(difficulty: Difficulty): androidx.compose.ui.graphics.Color {
+    return when (difficulty) {
+        Difficulty.VERY_EASY -> AppSkyBlue
+        Difficulty.EASY -> AppGrassGreen
+        Difficulty.MEDIUM -> AppOrange
+        Difficulty.HARD -> androidx.compose.ui.graphics.Color(0xFF9C27B0) // Purple
     }
 }

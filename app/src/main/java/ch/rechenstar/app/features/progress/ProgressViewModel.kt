@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.rechenstar.app.data.repository.ProgressRepository
 import ch.rechenstar.app.data.repository.UserRepository
+import ch.rechenstar.app.domain.model.Difficulty
 import ch.rechenstar.app.domain.model.ExerciseCategory
 import ch.rechenstar.app.domain.model.Level
 import ch.rechenstar.app.domain.service.MetricsService
@@ -67,6 +68,23 @@ class ProgressViewModel @Inject constructor(
                 dp?.exercisesCompleted ?: 0
             }
 
+            // Skill level based on 7-day accuracy
+            val skillLevel = if (prefs?.adaptiveDifficulty != false) {
+                if (categoryStats.isEmpty()) {
+                    Difficulty.VERY_EASY
+                } else {
+                    val avgAccuracy = categoryStats.map { it.accuracy }.average()
+                    when {
+                        avgAccuracy >= 0.9 -> Difficulty.HARD
+                        avgAccuracy >= 0.7 -> Difficulty.MEDIUM
+                        avgAccuracy >= 0.5 -> Difficulty.EASY
+                        else -> Difficulty.VERY_EASY
+                    }
+                }
+            } else {
+                Difficulty.fromRawValue(prefs?.difficultyLevel ?: 2)
+            }
+
             _uiState.value = ProgressUiState(
                 totalExercises = user.totalExercises,
                 totalStars = user.totalStars,
@@ -74,6 +92,7 @@ class ProgressViewModel @Inject constructor(
                 currentLevel = level,
                 levelProgress = progress,
                 nextLevelExercises = level.nextLevelExercises,
+                currentSkillLevel = skillLevel,
                 dailyGoal = prefs?.dailyGoal ?: 20,
                 dailyCompleted = dailyProgress?.exercisesCompleted ?: 0,
                 categoryStats = categoryStats,
