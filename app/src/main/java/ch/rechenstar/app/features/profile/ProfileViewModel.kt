@@ -25,4 +25,10 @@ class ProfileViewModel @Inject constructor(
             onCreated(user.id)
         }
     }
+
+    fun deleteProfile(userId: String) {
+        viewModelScope.launch {
+            userRepository.deleteUser(userId)
+        }
+    }
 }

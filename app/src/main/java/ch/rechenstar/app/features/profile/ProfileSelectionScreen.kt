@@ -1,6 +1,7 @@
 package ch.rechenstar.app.features.profile
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -40,8 +41,10 @@ import ch.rechenstar.app.ui.components.AppButton
 import ch.rechenstar.app.ui.components.AppButtonVariant
 import ch.rechenstar.app.ui.components.AppCard
 import ch.rechenstar.app.ui.theme.AppSkyBlue
+import ch.rechenstar.app.data.local.entity.UserEntity
 import ch.rechenstar.app.ui.theme.LightTextSecondary
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ProfileSelectionScreen(
     onProfileSelected: (String, String) -> Unit,
@@ -49,6 +52,7 @@ fun ProfileSelectionScreen(
 ) {
     val users by viewModel.users.collectAsState()
     var showCreateDialog by remember { mutableStateOf(false) }
+    var userToDelete by remember { mutableStateOf<UserEntity?>(null) }
 
     Column(
         modifier = Modifier
@@ -78,7 +82,10 @@ fun ProfileSelectionScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 6.dp)
-                    .clickable { onProfileSelected(user.id, user.name) }
+                    .combinedClickable(
+                        onClick = { onProfileSelected(user.id, user.name) },
+                        onLongClick = { userToDelete = user }
+                    )
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -130,6 +137,29 @@ fun ProfileSelectionScreen(
                     onProfileSelected(userId, name)
                 }
                 showCreateDialog = false
+            }
+        )
+    }
+
+    userToDelete?.let { user ->
+        AlertDialog(
+            onDismissRequest = { userToDelete = null },
+            title = { Text("Profil löschen?") },
+            text = {
+                Text("Alle Daten von ${user.name} werden unwiderruflich gelöscht.")
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        viewModel.deleteProfile(user.id)
+                        userToDelete = null
+                    }
+                ) {
+                    Text("Löschen", color = MaterialTheme.colorScheme.error)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { userToDelete = null }) { Text("Abbrechen") }
             }
         )
     }

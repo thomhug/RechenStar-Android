@@ -60,7 +60,7 @@ fun SettingsScreen(
     ) {
         // Gameplay
         SettingsCard {
-            Text("Spieleinstellungen", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onSurface)
+            Text("Spieleinstellungen", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface)
             Spacer(modifier = Modifier.height(12.dp))
 
             SettingsDropdown(
@@ -121,7 +121,7 @@ fun SettingsScreen(
 
         // Categories
         SettingsCard {
-            Text("Aufgabentypen", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onSurface)
+            Text("Aufgabentypen", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface)
             Spacer(modifier = Modifier.height(12.dp))
 
             listOf("Addition", "Subtraktion", "Multiplikation").forEach { group ->
@@ -145,7 +145,7 @@ fun SettingsScreen(
 
         // Audio
         SettingsCard {
-            Text("Ton & Haptik", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onSurface)
+            Text("Ton & Haptik", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface)
             Spacer(modifier = Modifier.height(12.dp))
 
             SettingsToggle(
@@ -164,7 +164,7 @@ fun SettingsScreen(
 
         // Display
         SettingsCard {
-            Text("Darstellung", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onSurface)
+            Text("Darstellung", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface)
             Spacer(modifier = Modifier.height(12.dp))
 
             SettingsDropdown(

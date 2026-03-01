@@ -13,6 +13,9 @@ interface AdjustmentLogDao {
     @Query("SELECT * FROM adjustment_logs WHERE userId = :userId ORDER BY timestamp DESC")
     fun getAllForUser(userId: String): Flow<List<AdjustmentLogEntity>>
 
+    @Query("SELECT * FROM adjustment_logs WHERE userId = :userId ORDER BY timestamp DESC")
+    suspend fun getAllForUserSync(userId: String): List<AdjustmentLogEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(log: AdjustmentLogEntity)
 }

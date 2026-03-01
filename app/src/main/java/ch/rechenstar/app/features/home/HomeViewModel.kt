@@ -10,6 +10,8 @@ import ch.rechenstar.app.domain.model.Level
 import ch.rechenstar.app.domain.service.ExerciseGenerator
 import ch.rechenstar.app.domain.service.ExerciseMetrics
 import ch.rechenstar.app.domain.service.MetricsService
+import ch.rechenstar.app.domain.service.SoundService
+import ch.rechenstar.app.util.HapticFeedback
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -63,6 +65,9 @@ class HomeViewModel @Inject constructor(
             }
 
             val enabledCategories = parseCategories(prefs?.enabledCategoriesRaw)
+
+            SoundService.setEnabled(prefs?.soundEnabled ?: true)
+            HapticFeedback.setEnabled(prefs?.hapticEnabled ?: true)
 
             _uiState.value = HomeUiState(
                 userName = user.name,

@@ -82,6 +82,9 @@ fun RechenStarNavigation() {
                         navController.navigate(Screen.ProfileSelection.route) {
                             popUpTo(0) { inclusive = true }
                         }
+                    },
+                    onParentArea = {
+                        navController.navigate(Screen.ParentDashboard.route)
                     }
                 )
             }

@@ -126,6 +126,11 @@ fun ParentDashboardScreen(
             // Progress adjustment
             ProgressAdjustmentSection(state, viewModel)
 
+            // Adjustment logs
+            if (state.adjustmentLogs.isNotEmpty()) {
+                AdjustmentLogsSection(state)
+            }
+
             Spacer(modifier = Modifier.height(24.dp))
         }
     }
@@ -747,6 +752,34 @@ private fun StepperRow(label: String, value: Int, onAdjust: (Int) -> Unit) {
                     tint = AppSkyBlue,
                     modifier = Modifier.size(18.dp)
                 )
+            }
+        }
+    }
+}
+
+@Composable
+private fun AdjustmentLogsSection(state: ParentDashboardUiState) {
+    AppCard(modifier = Modifier.fillMaxWidth()) {
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text(
+                "Änderungsprotokoll",
+                style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            state.adjustmentLogs.forEach { log ->
+                Column {
+                    Text(
+                        log.date,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = LightTextSecondary
+                    )
+                    Text(
+                        log.summary,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+                HorizontalDivider(color = LightTextSecondary.copy(alpha = 0.1f))
             }
         }
     }

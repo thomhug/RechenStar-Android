@@ -53,7 +53,7 @@ fun AchievementCard(
             MaterialTheme.colorScheme.surface
         else
             Color.Gray.copy(alpha = 0.1f),
-        shadowElevation = if (isUnlocked) 4.dp else 1.dp
+        shadowElevation = if (isUnlocked) 1.dp else 0.dp
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(16.dp),

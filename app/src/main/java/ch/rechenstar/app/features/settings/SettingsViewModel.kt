@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.rechenstar.app.data.local.dao.UserPreferencesDao
 import ch.rechenstar.app.data.repository.UserRepository
+import ch.rechenstar.app.domain.service.SoundService
+import ch.rechenstar.app.util.HapticFeedback
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -102,11 +104,13 @@ class SettingsViewModel @Inject constructor(
 
     fun updateSoundEnabled(value: Boolean) {
         _uiState.value = _uiState.value.copy(soundEnabled = value)
+        SoundService.setEnabled(value)
         savePrefs { it.copy(soundEnabled = value) }
     }
 
     fun updateHapticEnabled(value: Boolean) {
         _uiState.value = _uiState.value.copy(hapticEnabled = value)
+        HapticFeedback.setEnabled(value)
         savePrefs { it.copy(hapticEnabled = value) }
     }
 

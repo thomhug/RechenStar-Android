@@ -93,6 +93,9 @@ class UserRepository @Inject constructor(
     fun getAdjustmentLogs(userId: String): Flow<List<AdjustmentLogEntity>> =
         adjustmentLogDao.getAllForUser(userId)
 
+    suspend fun getAdjustmentLogsSync(userId: String): List<AdjustmentLogEntity> =
+        adjustmentLogDao.getAllForUserSync(userId)
+
     suspend fun addAdjustmentLog(userId: String, summary: String) =
         adjustmentLogDao.insert(
             AdjustmentLogEntity(

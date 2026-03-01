@@ -50,6 +50,11 @@ data class FocusArea(
     val example: String
 )
 
+data class AdjustmentLogItem(
+    val date: String,
+    val summary: String
+)
+
 data class ParentDashboardUiState(
     val weeklyAccuracy: Double = 0.0,
     val weeklyPlayTimeFormatted: String = "0 Min",
@@ -71,6 +76,7 @@ data class ParentDashboardUiState(
     val adjustStars: Int = 0,
     val adjustExercises: Int = 0,
     val adjustStreak: Int = 0,
+    val adjustmentLogs: List<AdjustmentLogItem> = emptyList(),
     val isLoading: Boolean = true
 )
 
@@ -193,6 +199,15 @@ class ParentDashboardViewModel @Inject constructor(
                 )
             }
 
+            // Adjustment logs
+            val logEntities = userRepository.getAdjustmentLogsSync(userId)
+            val adjustmentLogs = logEntities.map { log ->
+                val date = Instant.ofEpochMilli(log.timestamp)
+                    .atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"))
+                AdjustmentLogItem(date = date, summary = log.summary)
+            }
+
             // Member since
             val memberSince = Instant.ofEpochMilli(user.createdAt)
                 .atZone(ZoneId.systemDefault())
@@ -220,6 +235,7 @@ class ParentDashboardViewModel @Inject constructor(
                 adjustStars = user.totalStars,
                 adjustExercises = user.totalExercises,
                 adjustStreak = user.currentStreak,
+                adjustmentLogs = adjustmentLogs,
                 isLoading = false
             )
         }
@@ -276,6 +292,7 @@ class ParentDashboardViewModel @Inject constructor(
                 val longest = maxOf(user.longestStreak, state.adjustStreak)
                 userRepository.updateStreak(uid, state.adjustStreak, longest)
                 userRepository.addAdjustmentLog(uid, changes.joinToString(", "))
+                loadDashboard(uid)
             }
         }
     }
