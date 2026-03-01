@@ -167,11 +167,25 @@ fun SettingsScreen(
             Text("Darstellung", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onSurface)
             Spacer(modifier = Modifier.height(12.dp))
 
+            SettingsDropdown(
+                label = "Schriftgrösse",
+                options = listOf("normal" to "Normal", "gross" to "Gross"),
+                selected = state.fontSize,
+                onSelected = { viewModel.updateFontSize(it) }
+            )
+
             SettingsToggle(
                 title = "Weniger Animationen",
                 subtitle = "Reduziert Konfetti, Wackeln und Übergänge",
                 checked = state.reducedMotion,
                 onCheckedChange = { viewModel.updateReducedMotion(it) }
+            )
+
+            SettingsDropdown(
+                label = "Erscheinungsbild",
+                options = listOf("auto" to "Automatisch", "light" to "Hell", "dark" to "Dunkel"),
+                selected = state.appearance,
+                onSelected = { viewModel.updateAppearance(it) }
             )
         }
 

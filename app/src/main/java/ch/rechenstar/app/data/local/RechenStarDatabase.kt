@@ -2,6 +2,8 @@ package ch.rechenstar.app.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import ch.rechenstar.app.data.local.dao.AchievementDao
 import ch.rechenstar.app.data.local.dao.AdjustmentLogDao
 import ch.rechenstar.app.data.local.dao.DailyProgressDao
@@ -27,10 +29,19 @@ import ch.rechenstar.app.data.local.entity.UserPreferencesEntity
         AchievementEntity::class,
         AdjustmentLogEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class RechenStarDatabase : RoomDatabase() {
+    companion object {
+        val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE user_preferences ADD COLUMN fontSize TEXT NOT NULL DEFAULT 'normal'")
+                db.execSQL("ALTER TABLE user_preferences ADD COLUMN appearance TEXT NOT NULL DEFAULT 'auto'")
+            }
+        }
+    }
+
     abstract fun userDao(): UserDao
     abstract fun userPreferencesDao(): UserPreferencesDao
     abstract fun dailyProgressDao(): DailyProgressDao

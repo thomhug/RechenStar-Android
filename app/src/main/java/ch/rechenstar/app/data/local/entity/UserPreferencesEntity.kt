@@ -32,6 +32,9 @@ data class UserPreferencesEntity(
     val highContrast: Boolean = false,
     val largerText: Boolean = false,
     val colorBlindMode: String = "none",
+    // Display
+    val fontSize: String = "normal", // normal, gross
+    val appearance: String = "auto", // auto, light, dark
     // Categories
     val enabledCategoriesRaw: String = "addition_10,subtraction_10",
     // Parental

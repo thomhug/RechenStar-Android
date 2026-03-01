@@ -1,7 +1,6 @@
 package ch.rechenstar.app.domain.service
 
 import ch.rechenstar.app.domain.model.AchievementType
-import ch.rechenstar.app.domain.model.Difficulty
 import ch.rechenstar.app.domain.model.Exercise
 import ch.rechenstar.app.domain.model.ExerciseCategory
 import ch.rechenstar.app.domain.model.ExerciseResult
@@ -11,17 +10,21 @@ import org.junit.jupiter.api.Test
 
 /**
  * Tests for the engagement/achievement evaluation logic.
- * These test the pure domain logic of evaluating achievements,
- * separate from Room database operations.
+ * These test the pure domain logic via EngagementService methods directly.
  */
 class EngagementServiceTest {
 
-    private fun makeResults(count: Int = 10, allCorrect: Boolean = true): List<ExerciseResult> {
+    private fun makeResults(
+        count: Int = 10,
+        allCorrect: Boolean = true,
+        categories: List<ExerciseCategory> = listOf(ExerciseCategory.ADDITION_10)
+    ): List<ExerciseResult> {
         return (0 until count).map { i ->
+            val category = categories[i % categories.size]
             ExerciseResult(
                 exercise = Exercise(
-                    type = OperationType.ADDITION,
-                    category = ExerciseCategory.ADDITION_10,
+                    type = category.operationType,
+                    category = category,
                     firstNumber = 1 + (i % 5),
                     secondNumber = 1
                 ),
@@ -33,101 +36,149 @@ class EngagementServiceTest {
         }
     }
 
+    // --- Exercise count achievements ---
+
     @Test
     fun `exercises10 achievement met when total is 10`() {
-        val totalExercises = 10
-        val met = totalExercises >= AchievementType.EXERCISES_10.defaultTarget
+        val (met, progress) = EngagementService.evaluateAchievement(
+            type = AchievementType.EXERCISES_10,
+            totalExercises = 10
+        )
         assertTrue(met)
+        assertEquals(10, progress)
     }
 
     @Test
     fun `exercises10 achievement not met when total is 7`() {
-        val totalExercises = 7
-        val progress = minOf(totalExercises, AchievementType.EXERCISES_10.defaultTarget)
+        val (met, progress) = EngagementService.evaluateAchievement(
+            type = AchievementType.EXERCISES_10,
+            totalExercises = 7
+        )
+        assertFalse(met)
         assertEquals(7, progress)
-        assertFalse(totalExercises >= AchievementType.EXERCISES_10.defaultTarget)
     }
+
+    // --- Streak achievements ---
 
     @Test
     fun `streak achievement met when current streak is 3`() {
-        val currentStreak = 3
-        assertTrue(currentStreak >= AchievementType.STREAK_3.defaultTarget)
+        val (met, _) = EngagementService.evaluateAchievement(
+            type = AchievementType.STREAK_3,
+            currentStreak = 3
+        )
+        assertTrue(met)
     }
 
     @Test
     fun `streak resets after gap of more than 1 day`() {
-        // If lastActive is 2 days ago, streak should reset to 1
-        // This tests the logic that would be in EngagementService
-        val daysSinceLastActive = 2
-        val newStreak = if (daysSinceLastActive == 1) 4 else 1 // was 3
+        val twoDaysAgo = System.currentTimeMillis() - 2 * 24 * 60 * 60 * 1000
+        val (newStreak, _, isNew) = EngagementService.updateStreak(
+            currentStreak = 3,
+            longestStreak = 5,
+            lastActiveAt = twoDaysAgo
+        )
         assertEquals(1, newStreak)
+        assertTrue(isNew)
     }
 
     @Test
     fun `streak same day no change`() {
-        val daysSinceLastActive = 0
-        val currentStreak = 3
-        // Same day = no change
-        assertEquals(3, currentStreak)
+        val now = System.currentTimeMillis()
+        val (newStreak, _, isNew) = EngagementService.updateStreak(
+            currentStreak = 3,
+            longestStreak = 5,
+            lastActiveAt = now
+        )
+        assertEquals(3, newStreak)
+        assertFalse(isNew)
     }
+
+    // --- Perfect 10 ---
 
     @Test
     fun `perfect10 is incremental`() {
         val results = makeResults(count = 10, allCorrect = true)
-        val isPerfect = results.filter { !it.wasSkipped }.all { it.isCorrect } &&
-                results.filter { !it.wasSkipped }.size >= 10
-        assertTrue(isPerfect)
 
-        // After 1 perfect session, progress should be 1
-        var progress = 0
-        progress = if (isPerfect) progress + 1 else progress
+        val (met, progress) = EngagementService.evaluateAchievement(
+            type = AchievementType.PERFECT_10,
+            results = results,
+            currentProgress = 0
+        )
+        assertFalse(met)
         assertEquals(1, progress)
-        assertFalse(progress >= 10)  // Not yet unlocked
     }
+
+    // --- Speed demon ---
 
     @Test
     fun `speed demon met when 10 exercises in under 120 seconds`() {
-        val exerciseCount = 10
-        val sessionDuration = 90.0 // seconds
-        val met = exerciseCount >= 10 && sessionDuration < 120
+        val results = makeResults(count = 10)
+        val (met, _) = EngagementService.evaluateAchievement(
+            type = AchievementType.SPEED_DEMON,
+            results = results,
+            sessionDuration = 90.0
+        )
         assertTrue(met)
     }
 
     @Test
     fun `speed demon not met when session too long`() {
-        val exerciseCount = 10
-        val sessionDuration = 150.0
-        val met = exerciseCount >= 10 && sessionDuration < 120
+        val results = makeResults(count = 10)
+        val (met, _) = EngagementService.evaluateAchievement(
+            type = AchievementType.SPEED_DEMON,
+            results = results,
+            sessionDuration = 150.0
+        )
         assertFalse(met)
     }
 
+    // --- Variety ---
+
     @Test
     fun `variety achievement met with 4 categories`() {
-        val categories = setOf(
-            ExerciseCategory.ADDITION_10,
-            ExerciseCategory.SUBTRACTION_10,
-            ExerciseCategory.MULTIPLICATION_10,
-            ExerciseCategory.ADDITION_100
+        val results = makeResults(
+            count = 8,
+            categories = listOf(
+                ExerciseCategory.ADDITION_10,
+                ExerciseCategory.SUBTRACTION_10,
+                ExerciseCategory.MULTIPLICATION_10,
+                ExerciseCategory.ADDITION_100
+            )
         )
-        assertTrue(categories.size >= 4)
+        val (met, _) = EngagementService.evaluateAchievement(
+            type = AchievementType.VARIETY,
+            results = results
+        )
+        assertTrue(met)
     }
+
+    // --- Accuracy streak ---
 
     @Test
     fun `accuracy streak resets on bad session`() {
-        var progress = 2  // Had 2 good sessions
-        val sessionAccuracy = 0.6  // Below 80%
-        progress = if (sessionAccuracy >= 0.8) progress + 1 else 0
+        val results = makeResults(count = 10, allCorrect = false)
+        val (met, progress) = EngagementService.evaluateAchievement(
+            type = AchievementType.ACCURACY_STREAK,
+            results = results,
+            currentProgress = 2
+        )
+        assertFalse(met)
         assertEquals(0, progress)
     }
 
     @Test
     fun `accuracy streak increments on good session`() {
-        var progress = 2
-        val sessionAccuracy = 0.85
-        progress = if (sessionAccuracy >= 0.8) progress + 1 else 0
+        val results = makeResults(count = 10, allCorrect = true)
+        val (met, progress) = EngagementService.evaluateAchievement(
+            type = AchievementType.ACCURACY_STREAK,
+            results = results,
+            currentProgress = 2
+        )
+        assertTrue(met)
         assertEquals(3, progress)
-        assertTrue(progress >= 3)  // Unlocked!
     }
+
+    // --- Skipped exercises ---
 
     @Test
     fun `skipped exercises dont count for achievements`() {
@@ -146,9 +197,11 @@ class EngagementServiceTest {
                 wasSkipped = true
             )
         }
-        val attempted = results.filter { !it.wasSkipped }
-        assertEquals(0, attempted.size)
-        // speedDemon requires 10 attempted exercises
-        assertFalse(attempted.size >= 10)
+        val (met, _) = EngagementService.evaluateAchievement(
+            type = AchievementType.SPEED_DEMON,
+            results = results,
+            sessionDuration = 60.0
+        )
+        assertFalse(met)
     }
 }

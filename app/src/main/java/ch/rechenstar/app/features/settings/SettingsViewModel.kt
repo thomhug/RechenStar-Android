@@ -22,6 +22,8 @@ data class SettingsUiState(
     val soundEnabled: Boolean = true,
     val hapticEnabled: Boolean = true,
     val reducedMotion: Boolean = false,
+    val fontSize: String = "normal",
+    val appearance: String = "auto",
     val enabledCategories: List<String> = listOf("addition_10", "subtraction_10"),
     val isLoading: Boolean = true
 )
@@ -54,6 +56,8 @@ class SettingsViewModel @Inject constructor(
                 soundEnabled = prefs?.soundEnabled ?: true,
                 hapticEnabled = prefs?.hapticEnabled ?: true,
                 reducedMotion = prefs?.reducedMotion ?: false,
+                fontSize = prefs?.fontSize ?: "normal",
+                appearance = prefs?.appearance ?: "auto",
                 enabledCategories = prefs?.enabledCategoriesRaw?.split(",")?.filter { it.isNotBlank() }
                     ?: listOf("addition_10", "subtraction_10"),
                 isLoading = false
@@ -109,6 +113,16 @@ class SettingsViewModel @Inject constructor(
     fun updateReducedMotion(value: Boolean) {
         _uiState.value = _uiState.value.copy(reducedMotion = value)
         savePrefs { it.copy(reducedMotion = value) }
+    }
+
+    fun updateFontSize(value: String) {
+        _uiState.value = _uiState.value.copy(fontSize = value)
+        savePrefs { it.copy(fontSize = value) }
+    }
+
+    fun updateAppearance(value: String) {
+        _uiState.value = _uiState.value.copy(appearance = value)
+        savePrefs { it.copy(appearance = value) }
     }
 
     fun toggleCategory(categoryRaw: String, enabled: Boolean) {

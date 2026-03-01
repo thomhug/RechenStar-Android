@@ -28,7 +28,7 @@ object DatabaseModule {
             context,
             RechenStarDatabase::class.java,
             "rechenstar.db"
-        ).build()
+        ).addMigrations(RechenStarDatabase.MIGRATION_1_2).build()
 
     @Provides fun provideUserDao(db: RechenStarDatabase): UserDao = db.userDao()
     @Provides fun provideUserPreferencesDao(db: RechenStarDatabase): UserPreferencesDao = db.userPreferencesDao()

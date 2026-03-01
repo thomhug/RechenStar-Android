@@ -1,6 +1,8 @@
 package ch.rechenstar.app.features.progress
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,7 +11,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
@@ -23,6 +27,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.rechenstar.app.domain.model.ExerciseCategory
@@ -148,20 +153,34 @@ fun ProgressScreen(
                 value = "${state.totalExercises}",
                 label = "Aufgaben",
                 color = AppGrassGreen,
+                icon = Icons.Filled.CheckCircle,
                 modifier = Modifier.weight(1f)
             )
             MiniCard(
                 value = "${state.currentStreak}",
                 label = "Tage-Serie",
                 color = AppOrange,
+                iconText = "\uD83D\uDD25",
                 modifier = Modifier.weight(1f)
             )
             MiniCard(
                 value = "${state.totalStars}",
                 label = "Sterne",
                 color = AppSunYellow,
+                icon = Icons.Filled.Star,
                 modifier = Modifier.weight(1f)
             )
+        }
+
+        // Weekly chart
+        if (state.weeklyData.any { it > 0 }) {
+            Spacer(modifier = Modifier.height(12.dp))
+            AppCard(modifier = Modifier.fillMaxWidth()) {
+                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Text("Diese Woche", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onSurface)
+                    WeeklyBarChart(data = state.weeklyData)
+                }
+            }
         }
 
         // Category strengths
@@ -195,15 +214,99 @@ fun ProgressScreen(
 }
 
 @Composable
-private fun MiniCard(value: String, label: String, color: androidx.compose.ui.graphics.Color, modifier: Modifier = Modifier) {
+private fun MiniCard(
+    value: String,
+    label: String,
+    color: androidx.compose.ui.graphics.Color,
+    modifier: Modifier = Modifier,
+    icon: ImageVector? = null,
+    iconText: String? = null
+) {
     AppCard(modifier = modifier, padding = 12.dp) {
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
+            if (icon != null) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = color,
+                    modifier = Modifier.size(20.dp)
+                )
+            } else if (iconText != null) {
+                Text(iconText, style = MaterialTheme.typography.titleMedium)
+            }
             Text(value, style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onSurface)
             Text(label, style = MaterialTheme.typography.bodySmall, color = LightTextSecondary)
+        }
+    }
+}
+
+@Composable
+private fun WeeklyBarChart(data: List<Int>) {
+    val maxValue = data.maxOrNull()?.coerceAtLeast(1) ?: 1
+    val dayLabels = listOf("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
+    val chartHeight = 120.dp
+
+    Column {
+        // Y-axis max label
+        Row(modifier = Modifier.fillMaxWidth()) {
+            Spacer(modifier = Modifier.weight(1f))
+            Text(
+                text = "$maxValue",
+                style = MaterialTheme.typography.bodySmall,
+                color = LightTextSecondary
+            )
+        }
+
+        // Bars
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(chartHeight),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.Bottom
+        ) {
+            data.forEachIndexed { _, value ->
+                val fraction = value.toFloat() / maxValue.toFloat()
+                Box(
+                    modifier = Modifier
+                        .width(24.dp)
+                        .height(chartHeight * fraction.coerceAtLeast(0.02f))
+                        .background(
+                            color = if (value > 0) AppSkyBlue else LightTextSecondary.copy(alpha = 0.15f),
+                            shape = RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp)
+                        )
+                )
+            }
+        }
+
+        // X-axis labels
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 4.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            dayLabels.forEach { label ->
+                Text(
+                    text = label,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = LightTextSecondary
+                )
+            }
+        }
+
+        // Y-axis 0 label
+        Row(modifier = Modifier.fillMaxWidth()) {
+            Spacer(modifier = Modifier.weight(1f))
+            Text(
+                text = "0",
+                style = MaterialTheme.typography.bodySmall,
+                color = LightTextSecondary
+            )
         }
     }
 }

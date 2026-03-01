@@ -121,12 +121,22 @@ private fun DailyGoalSection(completed: Int, goal: Int) {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(top = 8.dp)
     ) {
-        Text(
-            text = "Tagesziel: $completed/$goal",
-            style = MaterialTheme.typography.bodySmall,
-            color = LightTextSecondary,
-            textAlign = TextAlign.Center
-        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = "\u2299",
+                style = MaterialTheme.typography.bodyMedium,
+                color = LightTextSecondary
+            )
+            Text(
+                text = " Tagesziel: $completed/$goal",
+                style = MaterialTheme.typography.bodySmall,
+                color = LightTextSecondary,
+                textAlign = TextAlign.Center
+            )
+        }
         Spacer(modifier = Modifier.height(4.dp))
         AppProgressBar(
             progress = fraction,

@@ -422,7 +422,7 @@ private fun ActionButtons(
     ) {
         if (feedbackState is ExerciseViewModel.FeedbackState.None && !hideSkipButton) {
             AppButton(
-                title = "Überspringen",
+                title = "\u25B6\u25B6 Überspringen",
                 variant = AppButtonVariant.GHOST,
                 modifier = Modifier.testTag("skip-button"),
                 onClick = onSkip

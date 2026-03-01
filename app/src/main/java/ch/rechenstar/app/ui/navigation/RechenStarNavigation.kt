@@ -3,13 +3,17 @@ package ch.rechenstar.app.ui.navigation
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -18,6 +22,7 @@ import ch.rechenstar.app.domain.model.ExerciseResult
 import ch.rechenstar.app.features.achievements.AchievementsScreen
 import ch.rechenstar.app.features.exercise.ExerciseScreen
 import ch.rechenstar.app.features.exercise.SessionCompleteScreen
+import ch.rechenstar.app.features.exercise.SessionCompleteViewModel
 import ch.rechenstar.app.features.home.HomeScreen
 import ch.rechenstar.app.features.home.HomeUiState
 import ch.rechenstar.app.features.profile.ProfileSelectionScreen
@@ -25,6 +30,7 @@ import ch.rechenstar.app.features.progress.ProgressScreen
 import ch.rechenstar.app.features.settings.HelpScreen
 import ch.rechenstar.app.features.settings.ParentDashboardScreen
 import ch.rechenstar.app.features.settings.SettingsScreen
+import ch.rechenstar.app.ui.components.ScreenTopBar
 
 sealed class Screen(val route: String) {
     data object Home : Screen("home")
@@ -50,17 +56,36 @@ fun RechenStarNavigation() {
     val navController = rememberNavController()
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
     var currentUserId by rememberSaveable { mutableStateOf<String?>(null) }
+    var currentUserName by rememberSaveable { mutableStateOf("") }
 
     // Exercise session state (complex objects, not saveable)
     var exerciseConfig by remember { mutableStateOf<HomeUiState?>(null) }
     var sessionResults by remember { mutableStateOf<List<ExerciseResult>>(emptyList()) }
     var sessionLength by remember { mutableIntStateOf(10) }
+    var sessionStartTime by remember { mutableLongStateOf(0L) }
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
     val showBottomBar = currentRoute in tabRoutes
 
+    val tabTitles = listOf("Spielen", "Fortschritt", "Erfolge", "Einstellungen")
+
     Scaffold(
+        topBar = {
+            if (showBottomBar && currentUserName.isNotEmpty()) {
+                ScreenTopBar(
+                    title = tabTitles.getOrElse(selectedTab) { "" },
+                    userName = currentUserName,
+                    onProfileSwitch = {
+                        currentUserId = null
+                        currentUserName = ""
+                        navController.navigate(Screen.ProfileSelection.route) {
+                            popUpTo(0) { inclusive = true }
+                        }
+                    }
+                )
+            }
+        },
         bottomBar = {
             if (showBottomBar) {
                 BottomNavBar(
@@ -85,8 +110,9 @@ fun RechenStarNavigation() {
         ) {
             composable(Screen.ProfileSelection.route) {
                 ProfileSelectionScreen(
-                    onProfileSelected = { userId ->
+                    onProfileSelected = { userId, userName ->
                         currentUserId = userId
+                        currentUserName = userName
                         selectedTab = 0
                         navController.navigate(Screen.Home.route) {
                             popUpTo(Screen.ProfileSelection.route) { inclusive = true }
@@ -101,6 +127,7 @@ fun RechenStarNavigation() {
                     onStartExercise = { config ->
                         exerciseConfig = config
                         sessionLength = config.sessionLength
+                        sessionStartTime = System.currentTimeMillis()
                         navController.navigate(Screen.Exercise.route)
                     }
                 )
@@ -150,9 +177,20 @@ fun RechenStarNavigation() {
             }
 
             composable(Screen.SessionComplete.route) {
+                val viewModel: SessionCompleteViewModel = hiltViewModel()
+                val engagement by viewModel.engagement.collectAsState()
+
+                LaunchedEffect(sessionResults) {
+                    val userId = currentUserId ?: return@LaunchedEffect
+                    if (sessionResults.isNotEmpty()) {
+                        viewModel.processSession(sessionResults, userId, sessionStartTime)
+                    }
+                }
+
                 SessionCompleteScreen(
                     results = sessionResults,
                     sessionLength = sessionLength,
+                    engagement = engagement,
                     onDismiss = {
                         navController.navigate(Screen.Home.route) {
                             popUpTo(Screen.Home.route) { inclusive = true }

@@ -44,7 +44,7 @@ import ch.rechenstar.app.ui.theme.LightTextSecondary
 
 @Composable
 fun ProfileSelectionScreen(
-    onProfileSelected: (String) -> Unit,
+    onProfileSelected: (String, String) -> Unit,
     viewModel: ProfileViewModel = hiltViewModel()
 ) {
     val users by viewModel.users.collectAsState()
@@ -66,7 +66,7 @@ fun ProfileSelectionScreen(
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "Wer möchte rechnen?",
+            text = if (users.isEmpty()) "Willkommen! Erstelle dein Profil:" else "Wer spielt?",
             style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.onBackground
         )
@@ -78,7 +78,7 @@ fun ProfileSelectionScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 6.dp)
-                    .clickable { onProfileSelected(user.id) }
+                    .clickable { onProfileSelected(user.id, user.name) }
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -127,7 +127,7 @@ fun ProfileSelectionScreen(
             onDismiss = { showCreateDialog = false },
             onCreate = { name ->
                 viewModel.createProfile(name) { userId ->
-                    onProfileSelected(userId)
+                    onProfileSelected(userId, name)
                 }
                 showCreateDialog = false
             }
@@ -144,12 +144,21 @@ private fun CreateProfileDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Neues Profil") },
+        title = {
+            Column {
+                Text("Neues Profil")
+                Text(
+                    "Wie heisst du?",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = LightTextSecondary
+                )
+            }
+        },
         text = {
             OutlinedTextField(
                 value = name,
                 onValueChange = { name = it },
-                label = { Text("Name") },
+                placeholder = { Text("Name eingeben") },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = {

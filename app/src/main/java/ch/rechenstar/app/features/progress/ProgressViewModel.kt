@@ -12,7 +12,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.ZoneId
+import java.time.temporal.TemporalAdjusters
 import javax.inject.Inject
 
 @HiltViewModel
@@ -55,6 +58,15 @@ class ProgressViewModel @Inject constructor(
                 }?.sortedBy { it.category.rawValue } ?: emptyList()
             } else emptyList()
 
+            // Weekly data (Mon-Sun)
+            val weekStart = LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
+            val weeklyData = (0..6).map { dayOffset ->
+                val day = weekStart.plusDays(dayOffset.toLong())
+                val dayEpoch = day.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+                val dp = progressRepository.getForDate(userId, dayEpoch)
+                dp?.exercisesCompleted ?: 0
+            }
+
             _uiState.value = ProgressUiState(
                 totalExercises = user.totalExercises,
                 totalStars = user.totalStars,
@@ -65,6 +77,7 @@ class ProgressViewModel @Inject constructor(
                 dailyGoal = prefs?.dailyGoal ?: 20,
                 dailyCompleted = dailyProgress?.exercisesCompleted ?: 0,
                 categoryStats = categoryStats,
+                weeklyData = weeklyData,
                 isLoading = false
             )
         }
