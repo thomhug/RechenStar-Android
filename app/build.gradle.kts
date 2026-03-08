@@ -8,6 +8,13 @@ plugins {
     alias(libs.plugins.hilt)
 }
 
+fun gitCommitCount(): Int {
+    val process = ProcessBuilder("git", "rev-list", "--count", "HEAD")
+        .directory(rootProject.projectDir)
+        .start()
+    return process.inputStream.bufferedReader().readText().trim().toIntOrNull() ?: 1
+}
+
 val keystorePropertiesFile = rootProject.file("keystore.properties")
 val keystoreProperties = Properties()
 if (keystorePropertiesFile.exists()) {
@@ -33,7 +40,7 @@ android {
         applicationId = "ch.rechenstar.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
+        versionCode = gitCommitCount()
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
